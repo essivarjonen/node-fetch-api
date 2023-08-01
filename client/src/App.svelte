@@ -3,33 +3,38 @@
   import API_URL from "../config.js";
 
   export let name;
-  let message = "";
+  let url = "";
+  let dog = "";
+  let image = "";
 
-  async function getData() {
+  async function fetchDog() {
     try {
-      const response = await fetch(`${API_URL}/api/data`);
+      const response = await fetch(`${API_URL}/dog`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      message = data.message;
+      console.log("Dogdata", data);
+      image = data[0].url;
+      dogId = data[0].id;
+      console.log("dogId", data[0].id);
     } catch (error) {
       console.error("Error fetching data:", error.message);
     }
   }
+
   onMount(() => {
-    getData();
+    fetchDog();
   });
 </script>
 
 <main>
   <h1>Hello {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
-  {#if message}
-    <p>{message}</p>
+  <h1>{dog}</h1>
+  <img src={image} />
+
+  {#if url}
+    <p>{url}</p>
   {:else}
     <p>Loading...</p>
   {/if}
